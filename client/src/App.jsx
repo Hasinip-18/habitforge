@@ -1,12 +1,26 @@
+import "./styles/App.css";
+
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+
 function App() {
   return (
-    <div>
-      <h1>🏆 HabitForge</h1>
-      <h2>Build Better Habits</h2>
-      <p>Track habits, earn XP, and level up your life.</p>
+    <>
+      <Navbar />
 
-      <button>Get Started</button>
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </>
   );
 }
 
