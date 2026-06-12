@@ -846,3 +846,123 @@
 
   font-size: 3rem;
 }
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  flex-wrap: wrap;
+
+  margin: 30px 0;
+}
+
+.stat-box {
+  width: 180px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.45);
+
+  backdrop-filter: blur(15px);
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.05);
+
+  transition: 0.3s;
+}
+
+.stat-box:hover {
+  transform:
+    translateY(-6px)
+    scale(1.03);
+}
+
+.stat-box h3 {
+  color: #7e22ce;
+
+  margin-bottom: 10px;
+}
+
+.stat-box p {
+  font-size: 1.8rem;
+
+  font-weight: 700;
+
+  color: #ec4899;
+}
+
+.level-popup {
+
+  position: fixed;
+
+  top: 30px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 20px 40px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    #ff4fa3,
+    #a855f7
+  );
+
+  color: white;
+
+  font-size: 1.4rem;
+
+  font-weight: bold;
+
+  text-align: center;
+
+  z-index: 999;
+
+  animation:
+    popupSlide 0.5s ease;
+}
+
+@keyframes popupSlide {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateY(-30px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+
+  }
+}
+.chart-card {
+  margin-top: 40px;
+
+  padding: 30px;
+
+  border-radius: 25px;
+
+  background: rgba(98, 164, 239, 0.45);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 8px 25px rgba(58, 80, 205, 0.05);
+}
