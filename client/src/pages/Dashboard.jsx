@@ -1,23 +1,63 @@
+import { useState } from "react";
+
+import XPCard from "../components/XPCard";
+import AchievementCard from "../components/AchievementCard";
+
+import HabitForm from "../components/HabitForm";
+import HabitList from "../components/HabitList";
+
 function Dashboard() {
+
+  const [habits, setHabits] = useState([
+    "Drink 3L Water",
+    "Read 20 Pages",
+    "Workout 30 Minutes",
+  ]);
+
+  const [newHabit, setNewHabit] = useState("");
+
+  const addHabit = () => {
+
+    if (newHabit.trim() === "") return;
+
+    setHabits([...habits, newHabit]);
+
+    setNewHabit("");
+  };
+
+  const deleteHabit = (indexToDelete) => {
+
+    setHabits(
+      habits.filter(
+        (_, index) => index !== indexToDelete
+      )
+    );
+  };
+
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
 
-      <div className="stat-card">
-        🔥
-        <h2>14 Days</h2>
-        <p>Current Streak</p>
-      </div>
+      <h1>
+        Welcome Back Hasini 👋
+      </h1>
 
-      <div className="stat-card">
-        ⭐
-        <h2>1250 XP</h2>
-        <p>Total XP</p>
-      </div>
+      <HabitForm
+        newHabit={newHabit}
+        setNewHabit={setNewHabit}
+        addHabit={addHabit}
+      />
 
-      <div className="stat-card">
-        🏆
-        <h2>Level 7</h2>
-        <p>Current Level</p>
+      <div className="dashboard-grid">
+
+        <XPCard />
+
+        <HabitList
+          habits={habits}
+          deleteHabit={deleteHabit}
+        />
+
+        <AchievementCard />
+
       </div>
 
     </div>

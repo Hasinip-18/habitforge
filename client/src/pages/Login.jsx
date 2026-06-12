@@ -4,7 +4,11 @@ function Login() {
 
       <div className="auth-card">
 
-        <h1>Welcome Back</h1>
+        <h1>Welcome Back 👋</h1>
+
+        <p>
+          Continue your habit-building journey.
+        </p>
 
         <input
           type="email"
@@ -17,7 +21,7 @@ function Login() {
         />
 
         <button>
-          Sign In
+          Login
         </button>
 
       </div>
