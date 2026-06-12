@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
 import ProgressChart from "../components/ProgressChart";
 
 import XPCard from "../components/XPCard";
@@ -7,7 +9,9 @@ import AchievementCard from "../components/AchievementCard";
 import HabitForm from "../components/HabitForm";
 import HabitList from "../components/HabitList";
 
+
 function Dashboard() {
+  const navigate = useNavigate();
 
   const [habits, setHabits] = useState(() => {
     const savedHabits = localStorage.getItem("habits");
@@ -158,6 +162,16 @@ const goalPercentage =
     );
 
   }, [level]);
+  useEffect(() => {
+
+  const token =
+    localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+  }
+
+}, [navigate]);
 
   return (
     <div className="dashboard-page">
