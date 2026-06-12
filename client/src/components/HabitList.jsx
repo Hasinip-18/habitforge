@@ -4,29 +4,35 @@ function HabitList({ habits, deleteHabit, toggleHabit }) {
       <h2>Today's Habits</h2>
 
       {habits.map((habit, index) => (
-        <div
-          key={index}
-          className="habit-item"
-        >
-          <label>
-            <input
-              type="checkbox"
-              checked={habit.completed}
-              onChange={() => toggleHabit(index)}
-            />
 
-            <span>
-              {habit.text}
-            </span>
-          </label>
+  <div
+    key={index}
+    className={`habit-item ${
+      habit.completed ? "completed" : ""
+    }`}
+  >
 
-          <button
-            onClick={() => deleteHabit(index)}
-          >
-            ❌
-          </button>
-        </div>
-      ))}
+    <label>
+
+      <input
+        type="checkbox"
+        checked={habit.completed}
+        onChange={() => toggleHabit(index)}
+      />
+
+      {habit.text}
+
+    </label>
+
+    <button
+      onClick={() => deleteHabit(index)}
+    >
+      ❌
+    </button>
+
+  </div>
+
+))}
     </div>
   );
 }

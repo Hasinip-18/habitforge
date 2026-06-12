@@ -36,10 +36,30 @@ function Dashboard() {
   const [newHabit, setNewHabit] = useState("");
 
   const level = Math.floor(xp / 500) + 1;
+  const badges = [];
+
+if (xp >= 100)
+  badges.push("🥉 Beginner");
+
+if (xp >= 1000)
+  badges.push("🥈 Consistent");
+
+if (xp >= 3000)
+  badges.push("🥇 Habit Master");
+
+if (xp >= 5000)
+  badges.push("💎 Legend");
 
   const completedHabits = habits.filter(
     (habit) => habit.completed
   ).length;
+  const dailyGoal = habits.length;
+
+const goalPercentage =
+  Math.min(
+    (completedHabits / dailyGoal) * 100,
+    100
+  );
 
   const addHabit = () => {
 
@@ -153,6 +173,10 @@ function Dashboard() {
       <h1>
         Welcome Back Hasini 👋
       </h1>
+      <p className="dashboard-subtitle">
+  Let's make habits dynamic today ✨
+</p>
+      
 
       <div className="stats-row">
 
@@ -175,8 +199,57 @@ function Dashboard() {
           <h3>✅ Completed</h3>
           <p>{completedHabits}</p>
         </div>
+        <div className="stat-box">
+
+  <h3>🎯 Daily Goal</h3>
+
+  <p>
+    {completedHabits}/{dailyGoal}
+  </p>
+
+</div>
+<div className="goal-card">
+
+  <h3>
+    🎯 Daily Progress
+  </h3>
+
+  <div className="goal-progress">
+
+    <div
+      className="goal-fill"
+      style={{
+        width: `${goalPercentage}%`
+      }}
+    ></div>
+
+  </div>
+
+  <p>
+    {completedHabits} of {dailyGoal}
+    habits completed
+  </p>
+
+</div>
 
       </div>
+      <div className="badges-card">
+
+  <h3>🏅 Badges</h3>
+
+  <div className="badges-list">
+
+    {badges.map((badge, index) => (
+
+      <span key={index}>
+        {badge}
+      </span>
+
+    ))}
+
+  </div>
+
+</div>
 
       <HabitForm
         newHabit={newHabit}
