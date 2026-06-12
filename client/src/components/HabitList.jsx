@@ -1,7 +1,6 @@
-function HabitList({ habits, deleteHabit }) {
+function HabitList({ habits, deleteHabit, toggleHabit }) {
   return (
     <div className="habit-card">
-
       <h2>Today's Habits</h2>
 
       {habits.map((habit, index) => (
@@ -9,7 +8,17 @@ function HabitList({ habits, deleteHabit }) {
           key={index}
           className="habit-item"
         >
-          <span>{habit}</span>
+          <label>
+            <input
+              type="checkbox"
+              checked={habit.completed}
+              onChange={() => toggleHabit(index)}
+            />
+
+            <span>
+              {habit.text}
+            </span>
+          </label>
 
           <button
             onClick={() => deleteHabit(index)}
@@ -18,7 +27,6 @@ function HabitList({ habits, deleteHabit }) {
           </button>
         </div>
       ))}
-
     </div>
   );
 }

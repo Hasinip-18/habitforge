@@ -363,7 +363,7 @@
   );
 }
 
-..auth-page {
+.auth-page {
   min-height: 100vh;
 
   display: flex;
@@ -800,4 +800,49 @@
 
 .habit-item button:hover {
   transform: scale(1.2);
+}
+.habit-item input {
+  margin-right: 10px;
+
+  transform: scale(1.2);
+}
+
+.habit-item label {
+  color: #4b5563;
+}
+
+.habit-item input:checked + span {
+  text-decoration: line-through;
+}
+.streak-card {
+  width: 350px;
+
+  padding: 25px;
+
+  border-radius: 25px;
+
+  background: rgba(255,255,255,0.4);
+
+  backdrop-filter: blur(15px);
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.08);
+
+  transition: 0.3s;
+}
+
+.streak-card:hover {
+  transform: translateY(-8px);
+}
+
+.streak-card h2 {
+  color: #ef4444;
+}
+
+.streak-card h1 {
+  color: #f97316;
+
+  font-size: 3rem;
 }
