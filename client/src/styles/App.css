@@ -1,4 +1,6 @@
-/* ---------- Navbar ---------- */
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar {
   display: flex;
@@ -7,11 +9,11 @@
 
   padding: 20px 50px;
 
-  background: rgba(255,255,255,0.65);
+  background: rgba(255, 255, 255, 0.65);
 
   backdrop-filter: blur(18px);
 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -43,21 +45,24 @@
 
 .nav-links a {
   color: white;
+
   text-decoration: none;
-  margin-left: 35px;
+
   font-size: 1.15rem;
+
   font-weight: 700;
+
+  position: relative;
 
   text-shadow:
     0 0 5px rgba(255,255,255,0.4),
     0 0 10px rgba(255,255,255,0.2);
 
   transition: all 0.3s ease;
-  position: relative;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: #ff4fa3;
 
   text-shadow:
     0 0 8px rgba(255,255,255,0.8),
@@ -69,11 +74,14 @@
 
 .nav-links a::after {
   content: "";
+
   position: absolute;
+
   left: 0;
   bottom: -6px;
 
   width: 0%;
+
   height: 3px;
 
   background: linear-gradient(
@@ -83,26 +91,17 @@
   );
 
   border-radius: 10px;
+
   transition: 0.3s;
 }
 
 .nav-links a:hover::after {
   width: 100%;
 }
-.nav-links a:hover {
-  color: #ff77c8;
 
-  text-shadow:
-    0 0 10px rgba(255,119,200,0.6),
-    0 0 20px rgba(168,85,247,0.4);
-
-  transform: translateY(-2px);
-}
-.nav-links a:hover {
-  color: #ff4fa3;
-}
-
-/* ---------- Hero Section ---------- */
+/* =========================
+   HOME PAGE
+========================= */
 
 .home {
   min-height: 90vh;
@@ -127,16 +126,21 @@
 }
 
 .hero-content {
-  max-width: 900px;
+  max-width: 1100px;
+
   padding: 20px;
+
+  z-index: 2;
+
+  animation: fadeUp 1s ease;
 }
 
 .home h1 {
   font-family: "Playwrite GB S", cursive;
 
-  font-size: 4.8rem;
+  font-size: 5rem;
 
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 
   background: linear-gradient(
     90deg,
@@ -157,24 +161,40 @@
 }
 
 .home h2 {
-  font-size: 2rem;
-
-  margin-bottom: 25px;
-
-  color: #7e22ce;
-}
-
-.home p {
-  font-size: 1.15rem;
-
-  line-height: 1.9;
+  font-size: 2.5rem;
 
   color: #4c1d95;
 
-  margin-bottom: 35px;
+  font-weight: 800;
+
+  margin-bottom: 20px;
 }
 
-.home button {
+.tagline {
+  color: #4b5563;
+
+  font-size: 1.3rem;
+
+  margin-bottom: 35px;
+
+  line-height: 1.8;
+}
+
+.level-up {
+  font-weight: bold;
+
+  background: linear-gradient(
+    90deg,
+    #ff4fa3,
+    #d946ef,
+    #a855f7
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-btn {
   background: linear-gradient(
     135deg,
     #ff4fa3,
@@ -192,63 +212,37 @@
 
   font-size: 1rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   cursor: pointer;
 
   transition: 0.3s;
 }
 
-.home button:hover {
+.hero-btn:hover {
   transform: translateY(-5px) scale(1.05);
 
-  box-shadow: 0 12px 30px rgba(217,70,239,0.4);
+  box-shadow:
+    0 12px 30px rgba(217,70,239,0.4);
 }
 
+/* =========================
+   FLOATING BUBBLES
+========================= */
 
-
-/* ---------- Animations ---------- */
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-15px);
-  }
-
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-@keyframes gradientText {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-.floating-circle {
+.bubble {
   position: absolute;
 
   border-radius: 50%;
 
-  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.2);
 
-  background: rgba(62, 157, 241, 0.25);
+  backdrop-filter: blur(12px);
 
   animation: floatCircle 8s ease-in-out infinite;
 }
 
-.circle1 {
+.bubble1 {
   width: 120px;
   height: 120px;
 
@@ -256,7 +250,7 @@
   left: 10%;
 }
 
-.circle2 {
+.bubble2 {
   width: 180px;
   height: 180px;
 
@@ -264,7 +258,7 @@
   left: 80%;
 }
 
-.circle3 {
+.bubble3 {
   width: 90px;
   height: 90px;
 
@@ -272,19 +266,80 @@
   right: 15%;
 }
 
-@keyframes floatCircle {
-  0% {
-    transform: translateY(0px);
-  }
+.bubble4 {
+  width: 140px;
+  height: 140px;
 
-  50% {
-    transform: translateY(-25px);
-  }
-
-  100% {
-    transform: translateY(0px);
-  }
+  bottom: 10%;
+  left: 20%;
 }
+
+.bubble5 {
+  width: 70px;
+  height: 70px;
+
+  top: 10%;
+  right: 30%;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+  display: flex;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 25px;
+
+  margin-top: 80px;
+}
+
+.feature-card {
+  width: 250px;
+
+  padding: 25px;
+
+  border-radius: 25px;
+
+  background: rgba(255,255,255,0.35);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.05);
+
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform:
+    translateY(-10px)
+    scale(1.03);
+
+  box-shadow:
+    0 15px 35px rgba(168,85,247,0.15);
+}
+
+.feature-card h3 {
+  color: #7e22ce;
+
+  margin-bottom: 12px;
+
+  font-size: 1.3rem;
+}
+
+.feature-card p {
+  color: #555;
+}
+
+/* =========================
+   LOGIN & REGISTER
+========================= */
+
 .auth-page {
   min-height: 90vh;
 
@@ -322,9 +377,9 @@
 .auth-card input {
   padding: 14px;
 
-  border-radius: 12px;
-
   border: none;
+
+  border-radius: 12px;
 }
 
 .auth-card button {
@@ -334,17 +389,20 @@
 
   border-radius: 12px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ff4fa3,
-      #a855f7
-    );
+  background: linear-gradient(
+    135deg,
+    #ff4fa3,
+    #a855f7
+  );
 
-  color: rgb(237, 170, 194);
+  color: white;
 
   cursor: pointer;
 }
+
+/* =========================
+   DASHBOARD
+========================= */
 
 .dashboard {
   min-height: 90vh;
@@ -352,7 +410,6 @@
   display: flex;
 
   justify-content: center;
-
   align-items: center;
 
   gap: 30px;
@@ -386,4 +443,62 @@
 
 .stat-card:hover {
   transform: translateY(-10px);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes floatCircle {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-25px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes gradientText {
+  0% {
+    background-position: 0%;
+  }
+
+  50% {
+    background-position: 100%;
+  }
+
+  100% {
+    background-position: 0%;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
