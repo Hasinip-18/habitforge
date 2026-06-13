@@ -1269,3 +1269,35 @@
     box-shadow: 0 0 0 rgba(255,79,216,0.5);
   }
 }
+.ai-card {
+
+  background: rgb(188, 220, 238);
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 20px;
+
+}
+
+.ai-card input {
+
+  width: 70%;
+  padding: 10px;
+  margin-right: 10px;
+
+}
+
+.ai-card button {
+
+  padding: 10px 20px;
+  cursor: pointer;
+
+}
+
+.suggestion-item {
+
+  margin-top: 10px;
+  padding: 10px;
+  background: #d7bde3;
+  border-radius: 10px;
+
+}

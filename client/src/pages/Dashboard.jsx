@@ -9,6 +9,7 @@ import AchievementCard from "../components/AchievementCard";
 import HabitForm from "../components/HabitForm";
 import HabitList from "../components/HabitList";
 import axios from "axios";
+import AISuggestions from "../components/AISuggestions";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -402,6 +403,7 @@ useEffect(() => {
         setNewHabit={setNewHabit}
         addHabit={addHabit}
       />
+      <AISuggestions />
 
       <div className="dashboard-grid">
 

@@ -6,11 +6,19 @@ const connectDB = require("./config/db");
 
 const authRoutes =
   require("./routes/authRoutes");
-
+  
+const aiRoutes =
+  require("./routes/aiRoutes");
 const habitRoutes =
   require("./routes/habitRoutes");
 
 dotenv.config();
+dotenv.config();
+
+console.log(
+  "Gemini Key:",
+  process.env.GEMINI_API_KEY
+);
 
 connectDB();
 
@@ -27,6 +35,10 @@ app.use(
 app.use(
   "/api/habits",
   habitRoutes
+);
+app.use(
+  "/api/ai",
+  aiRoutes
 );
 
 app.get("/", (req, res) => {
