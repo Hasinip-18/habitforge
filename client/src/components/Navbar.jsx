@@ -45,6 +45,10 @@ function Navbar() {
               Dashboard
             </Link>
 
+            <Link to="/profile">
+  Profile
+</Link>
+
             <button
               onClick={handleLogout}
               className="logout-btn"

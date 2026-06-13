@@ -79,10 +79,12 @@ const loginUser = async (req, res) => {
     res.json({
       token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  xp: user.xp,
+  streak: user.streak,
+},
     });
 
   } catch (error) {
@@ -94,8 +96,53 @@ const loginUser = async (req, res) => {
   }
 
 };
+const getProfile = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(
+      req.user.id
+    ).select("-password");
+
+    res.json(user);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+
+};
+const updateXP = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(
+      req.user.id
+    );
+
+    user.xp = req.body.xp;
+
+    await user.save();
+
+    res.json(user);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+
+};
+
 
 module.exports = {
   registerUser,
   loginUser,
+  getProfile,
+  updateXP,
 };

@@ -8,30 +8,16 @@ import StreakCard from "../components/StreakCard";
 import AchievementCard from "../components/AchievementCard";
 import HabitForm from "../components/HabitForm";
 import HabitList from "../components/HabitList";
-
+import axios from "axios";
 
 function Dashboard() {
   const navigate = useNavigate();
+  
+const [habits, setHabits] = useState([]);
 
-  const [habits, setHabits] = useState(() => {
-    const savedHabits = localStorage.getItem("habits");
+const [xp, setXp] = useState(0);
 
-    return savedHabits
-      ? JSON.parse(savedHabits)
-      : [
-          { text: "Drink 3L Water", completed: false },
-          { text: "Read 20 Pages", completed: false },
-          { text: "Workout 30 Minutes", completed: false },
-        ];
-  });
-
-  const [xp, setXp] = useState(
-    () => Number(localStorage.getItem("xp")) || 2450
-  );
-
-  const [streak, setStreak] = useState(
-    () => Number(localStorage.getItem("streak")) || 12
-  );
+const [streak, setStreak] = useState(0);
 
   const [achievements, setAchievements] = useState([]);
 
@@ -65,61 +51,138 @@ const goalPercentage =
     100
   );
 
-  const addHabit = () => {
+const addHabit = async () => {
 
-    if (newHabit.trim() === "") return;
+  if (newHabit.trim() === "") return;
+
+  try {
+
+    const token =
+      localStorage.getItem("token");
+
+    const response =
+      await axios.post(
+        "http://localhost:8000/api/habits",
+        {
+          text: newHabit,
+        },
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
 
     setHabits([
       ...habits,
-      {
-        text: newHabit,
-        completed: false,
-      },
+      response.data,
     ]);
 
     setNewHabit("");
-  };
 
-  const deleteHabit = (indexToDelete) => {
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+const deleteHabit = async (indexToDelete) => {
+
+  try {
+
+    const token =
+      localStorage.getItem("token");
+
+    const habitToDelete =
+      habits[indexToDelete];
+
+    await axios.delete(
+      `http://localhost:8000/api/habits/${habitToDelete._id}`,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      }
+    );
 
     setHabits(
       habits.filter(
-        (_, index) => index !== indexToDelete
+        (_, index) =>
+          index !== indexToDelete
       )
     );
-  };
 
-  const toggleHabit = (index) => {
+  } catch (error) {
 
-    const updatedHabits = [...habits];
+    console.log(error);
 
-    const habit = updatedHabits[index];
+  }
 
-    if (!habit.completed) {
-      setXp((prevXp) => prevXp + 10);
-    } else {
-      setXp((prevXp) => prevXp - 10);
-    }
+};
+const toggleHabit = async (index) => {
 
-    habit.completed = !habit.completed;
+  try {
+
+    const token =
+      localStorage.getItem("token");
+
+    const habit =
+      habits[index];
+
+    const response =
+      await axios.put(
+        `http://localhost:8000/api/habits/${habit._id}`,
+        {},
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+    const updatedHabits =
+      [...habits];
+
+    updatedHabits[index] =
+      response.data;
+
+let newXP;
+
+if (response.data.completed) {
+  newXP = xp + 10;
+} else {
+  newXP = xp - 10;
+}
+
+setXp(newXP);
+
+await axios.put(
+  "http://localhost:8000/api/auth/xp",
+  {
+    xp: newXP,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
     setHabits(updatedHabits);
-  };
 
-  useEffect(() => {
-    localStorage.setItem(
-      "habits",
-      JSON.stringify(habits)
-    );
-  }, [habits]);
+  } catch (error) {
 
-  useEffect(() => {
-    localStorage.setItem("xp", xp);
-  }, [xp]);
+    console.log(error);
 
-  useEffect(() => {
-    localStorage.setItem("streak", streak);
-  }, [streak]);
+  }
+
+};
+
+
 
   useEffect(() => {
 
@@ -172,6 +235,75 @@ const goalPercentage =
   }
 
 }, [navigate]);
+useEffect(() => {
+
+  const fetchHabits = async () => {
+
+    try {
+
+      const token =
+        localStorage.getItem("token");
+
+      const response =
+        await axios.get(
+          "http://localhost:8000/api/habits",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      setHabits(response.data);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  fetchHabits();
+
+}, []);
+
+  useEffect(() => {
+
+  const fetchProfile = async () => {
+
+    try {
+
+      const token =
+        localStorage.getItem("token");
+
+      const response =
+        await axios.get(
+          "http://localhost:8000/api/auth/profile",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      setXp(response.data.xp);
+      setStreak(response.data.streak);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  fetchProfile();
+
+}, []);
+
 
   return (
     <div className="dashboard-page">
