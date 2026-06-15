@@ -10,6 +10,7 @@ import HabitForm from "../components/HabitForm";
 import HabitList from "../components/HabitList";
 import axios from "axios";
 import AISuggestions from "../components/AISuggestions";
+import Confetti from "react-confetti";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -23,8 +24,17 @@ const [streak, setStreak] = useState(0);
   const [achievements, setAchievements] = useState([]);
 
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const [challengeCompleted,
+  setChallengeCompleted] =
+  useState(false);
+  const [category, setCategory] =
+  useState("Personal");
 
   const [newHabit, setNewHabit] = useState("");
+  const [achievementPopup, setAchievementPopup] =
+  useState("");
+  const [showConfetti, setShowConfetti] =
+  useState(false);
 
   const level = Math.floor(xp / 500) + 1;
   const badges = [];
@@ -44,6 +54,13 @@ if (xp >= 5000)
   const completedHabits = habits.filter(
     (habit) => habit.completed
   ).length;
+  const challengeTarget = 3;
+
+const challengeProgress =
+  Math.min(
+    completedHabits,
+    challengeTarget
+  );
   const dailyGoal = habits.length;
 
 const goalPercentage =
@@ -66,6 +83,7 @@ const addHabit = async () => {
         "http://localhost:8000/api/habits",
         {
           text: newHabit,
+          category: category,
         },
         {
           headers: {
@@ -185,25 +203,68 @@ await axios.put(
 
 
 
-  useEffect(() => {
+useEffect(() => {
 
-    const unlocked = [];
+  const unlocked = [];
 
-    if (completedHabits >= 1) {
-      unlocked.push("🏆 First Habit Completed");
-    }
+  if (completedHabits >= 1) {
+    unlocked.push("🏆 First Habit Completed");
+  }
 
-    if (xp >= 1000) {
-      unlocked.push("⭐ Earned 1000 XP");
-    }
+  if (completedHabits >= 10) {
+    unlocked.push("🥉 Completed 10 Habits");
+  }
 
-    if (streak >= 7) {
-      unlocked.push("🔥 7 Day Streak");
-    }
+  if (completedHabits >= 50) {
+    unlocked.push("🥈 Completed 50 Habits");
+  }
 
-    setAchievements(unlocked);
+  if (completedHabits >= 100) {
+    unlocked.push("🥇 Completed 100 Habits");
+  }
 
-  }, [completedHabits, xp, streak]);
+  if (xp >= 1000) {
+    unlocked.push("⭐ Earned 1000 XP");
+  }
+
+  if (xp >= 5000) {
+    unlocked.push("🚀 Reached 5000 XP");
+  }
+
+  if (level >= 10) {
+    unlocked.push("💎 Reached Level 10");
+  }
+
+  if (streak >= 7) {
+    unlocked.push("🔥 7 Day Streak");
+  }
+
+  if (streak >= 30) {
+    unlocked.push("🔥 30 Day Streak");
+  }
+
+  setAchievements(unlocked);
+  if (
+  unlocked.length >
+  achievements.length
+) {
+  setAchievementPopup(
+    unlocked[
+      unlocked.length - 1
+    ]
+  );
+  setShowConfetti(true);
+
+setTimeout(() => {
+  setShowConfetti(false);
+}, 4000);
+
+  setTimeout(() => {
+    setAchievementPopup("");
+  }, 3000);
+}
+
+}, [completedHabits, xp, streak, level]);
 
   useEffect(() => {
 
@@ -304,18 +365,75 @@ useEffect(() => {
   fetchProfile();
 
 }, []);
+useEffect(() => {
+
+  if (
+    completedHabits >= 3 &&
+    !challengeCompleted
+  ) {
+
+    setChallengeCompleted(true);
+
+    const newXP = xp + 50;
+
+    setXp(newXP);
+
+    const token =
+      localStorage.getItem("token");
+
+    axios.put(
+      "http://localhost:8000/api/auth/xp",
+      {
+        xp: newXP,
+      },
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      }
+    );
+
+    setAchievementPopup(
+      "🎯 Daily Challenge Completed"
+    );
+
+    setShowConfetti(true);
+
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 4000);
+
+  }
+
+}, [completedHabits]);
 
 
   return (
-    <div className="dashboard-page">
+  
+  <div className="dashboard-page">
 
-      {showLevelUp && (
-        <div className="level-popup">
-          🎉 LEVEL UP!
-          <br />
-          Level {level}
-        </div>
-      )}
+    {achievementPopup && (
+      <div className="achievement-popup">
+        🎉 Achievement Unlocked!
+        <br />
+        {achievementPopup}
+      </div>
+    )}
+    {showConfetti && (
+  <Confetti
+    recycle={false}
+    numberOfPieces={250}
+  />
+)}
+
+    {showLevelUp && (
+      <div className="level-popup">
+        🎉 LEVEL UP!
+        <br />
+        Level {level}
+      </div>
+    )}
 
       <h1>
         Welcome Back Hasini 👋
@@ -347,6 +465,7 @@ useEffect(() => {
           <p>{completedHabits}</p>
         </div>
         <div className="stat-box">
+
 
   <h3>🎯 Daily Goal</h3>
 
@@ -397,12 +516,34 @@ useEffect(() => {
   </div>
 
 </div>
+<div className="challenge-card">
 
-      <HabitForm
-        newHabit={newHabit}
-        setNewHabit={setNewHabit}
-        addHabit={addHabit}
-      />
+  <h3>
+    🎯 Daily Challenge
+  </h3>
+
+  <p>
+    Complete 3 habits today
+  </p>
+
+  <p>
+    Progress:
+    {challengeProgress}/3
+  </p>
+
+  <p>
+    Reward: +50 XP
+  </p>
+
+</div>
+
+<HabitForm
+  newHabit={newHabit}
+  setNewHabit={setNewHabit}
+  addHabit={addHabit}
+  category={category}
+  setCategory={setCategory}
+/>
       <AISuggestions />
 
       <div className="dashboard-grid">

@@ -1,4 +1,5 @@
 const Habit = require("../models/Habit");
+const User = require("../models/User");
 
 const getHabits = async (req, res) => {
   try {
@@ -21,11 +22,11 @@ const getHabits = async (req, res) => {
 const addHabit = async (req, res) => {
   try {
 
-    const habit = await Habit.create({
-      user: req.user.id,
-      text: req.body.text,
-    });
-
+const habit = await Habit.create({
+  user: req.user.id,
+  text: req.body.text,
+  category: req.body.category,
+});
     res.status(201).json(habit);
 
   } catch (error) {
@@ -87,10 +88,61 @@ const toggleHabit = async (req, res) => {
 
     }
 
-    habit.completed =
-      !habit.completed;
+if (!habit.completed) {
+
+  habit.completed = true;
+  habit.completedDate = new Date();
+
+} else {
+
+  habit.completed = false;
+  habit.completedDate = null;
+
+}
 
     await habit.save();
+    const user = await User.findById(
+  req.user.id
+);
+
+if (habit.completed) {
+
+  const today = new Date();
+
+  const lastDate =
+    user.lastCompletedDate;
+
+  if (!lastDate) {
+
+    user.streak = 1;
+
+  } else {
+
+    const diffDays = Math.floor(
+      (today - lastDate) /
+      (1000 * 60 * 60 * 24)
+    );
+
+    if (diffDays === 1) {
+
+      user.streak += 1;
+
+    } else if (
+      diffDays > 1
+    ) {
+
+      user.streak = 1;
+
+    }
+
+  }
+
+  user.lastCompletedDate =
+    today;
+
+  await user.save();
+
+}
 
     res.json(habit);
 

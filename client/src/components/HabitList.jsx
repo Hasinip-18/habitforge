@@ -20,7 +20,20 @@ function HabitList({ habits, deleteHabit, toggleHabit }) {
         onChange={() => toggleHabit(index)}
       />
 
-      {habit.text}
+     <span>
+
+  {habit.category === "Health"
+    ? "🏃"
+    : habit.category === "Study"
+    ? "📚"
+    : habit.category === "Coding"
+    ? "💻"
+    : "🌱"}
+
+  {" "}
+  {habit.text}
+
+</span>
 
     </label>
 

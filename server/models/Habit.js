@@ -12,11 +12,22 @@ const habitSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+  type: String,
+  default: "Personal",
+},
 
     completed: {
       type: Boolean,
       default: false,
     },
+
+    completedDate: {
+  type: Date,
+  default: null,
+},
+
+
   },
   {
     timestamps: true,

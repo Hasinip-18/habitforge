@@ -27,6 +27,44 @@ function AISuggestions() {
     }
 
   };
+  const addSuggestionAsHabit = async (
+  suggestion
+) => {
+
+  try {
+
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    await axios.post(
+      "http://localhost:8000/api/habits",
+      {
+        text: suggestion,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert(
+      "Habit added successfully!"
+    );
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Failed to add habit"
+    );
+
+  }
+
+};
 
   return (
 
@@ -50,19 +88,32 @@ function AISuggestions() {
       >
         Generate
       </button>
+{suggestions.map(
+  (suggestion, index) => (
 
-      {suggestions.map(
-        (suggestion, index) => (
+    <div
+      key={index}
+      className="suggestion-item"
+    >
 
-          <div
-            key={index}
-            className="suggestion-item"
-          >
-            {suggestion}
-          </div>
+      <span>
+        {suggestion}
+      </span>
 
-        )
-      )}
+      <button
+        onClick={() =>
+          addSuggestionAsHabit(
+            suggestion
+          )
+        }
+      >
+        Add Habit
+      </button>
+
+    </div>
+
+  )
+)}
 
     </div>
 

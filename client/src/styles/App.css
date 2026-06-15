@@ -1301,3 +1301,70 @@
   border-radius: 10px;
 
 }
+.achievement-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+  font-weight: bold;
+}
+.achievement-popup {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+
+  background: linear-gradient(
+    135deg,
+    #9333ea,
+    #ec4899
+  );
+
+  color: white;
+
+  padding: 20px 30px;
+
+  border-radius: 15px;
+
+  font-weight: bold;
+
+  z-index: 9999;
+
+  animation: popup 0.4s ease;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.challenge-card {
+
+  background: linear-gradient(
+    135deg,
+    #b47ee7,
+    #ec72af
+  );
+
+  color: rgb(252, 252, 252);
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  margin: 20px 0;
+
+  box-shadow:
+    0 8px 20px
+    rgba(168, 85, 247, 0.3);
+
+}
