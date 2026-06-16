@@ -6,19 +6,57 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+function ProgressChart({
+  habits,
+}) {
 
-function ProgressChart() {
+const data = [];
 
-  const data = [
-    { day: "Mon", xp: 20 },
-    { day: "Tue", xp: 35 },
-    { day: "Wed", xp: 40 },
-    { day: "Thu", xp: 60 },
-    { day: "Fri", xp: 70 },
-    { day: "Sat", xp: 90 },
-    { day: "Sun", xp: 120 },
-  ];
+for (
+  let i = 6;
+  i >= 0;
+  i--
+) {
 
+  const date =
+    new Date();
+
+  date.setDate(
+    date.getDate() - i
+  );
+
+  const formatted =
+    date
+      .toISOString()
+      .split("T")[0];
+
+  const count =
+    habits.filter((habit) =>
+
+      habit
+        .completionDates
+        ?.includes(
+          formatted
+        )
+
+    ).length;
+
+  data.push({
+
+    day:
+      date.toLocaleDateString(
+        "en-US",
+        {
+          month: "short",
+          day: "numeric",
+        }
+      ),
+
+    completions: count,
+
+  });
+
+}
   return (
     <div className="chart-card">
 
@@ -35,7 +73,7 @@ function ProgressChart() {
 
           <Line
             type="monotone"
-            dataKey="xp"
+            dataKey="completions"
             stroke="#a855f7"
             strokeWidth={3}
           />

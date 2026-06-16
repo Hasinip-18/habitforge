@@ -8,6 +8,25 @@ const getHabits = async (req, res) => {
       user: req.user.id,
     });
 
+    const today =
+      new Date().toDateString();
+
+    for (const habit of habits) {
+
+      if (
+        habit.completedDate &&
+        habit.completedDate.toDateString() !==
+          today
+      ) {
+
+        habit.completed = false;
+
+        await habit.save();
+
+      }
+
+    }
+
     res.json(habits);
 
   } catch (error) {
@@ -26,6 +45,7 @@ const habit = await Habit.create({
   user: req.user.id,
   text: req.body.text,
   category: req.body.category,
+  difficulty: req.body.difficulty,
 });
     res.status(201).json(habit);
 
@@ -88,10 +108,27 @@ const toggleHabit = async (req, res) => {
 
     }
 
+const today =
+  new Date()
+    .toISOString()
+    .split("T")[0];
+
 if (!habit.completed) {
 
   habit.completed = true;
   habit.completedDate = new Date();
+
+  if (
+    !habit.completionDates.includes(
+      today
+    )
+  ) {
+
+    habit.completionDates.push(
+      today
+    );
+
+  }
 
 } else {
 

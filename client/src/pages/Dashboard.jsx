@@ -29,12 +29,18 @@ const [streak, setStreak] = useState(0);
   useState(false);
   const [category, setCategory] =
   useState("Personal");
+  const [difficulty,
+  setDifficulty] =
+  useState("Easy");
 
   const [newHabit, setNewHabit] = useState("");
   const [achievementPopup, setAchievementPopup] =
   useState("");
   const [showConfetti, setShowConfetti] =
   useState(false);
+  const [selectedHistory,
+  setSelectedHistory] =
+  useState(null);
 
   const level = Math.floor(xp / 500) + 1;
   const badges = [];
@@ -84,6 +90,7 @@ const addHabit = async () => {
         {
           text: newHabit,
           category: category,
+          difficulty: difficulty,
         },
         {
           headers: {
@@ -151,17 +158,21 @@ const toggleHabit = async (index) => {
     const habit =
       habits[index];
 
-    const response =
-      await axios.put(
-        `http://localhost:8000/api/habits/${habit._id}`,
-        {},
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+const response =
+  await axios.put(
+    `http://localhost:8000/api/habits/${habit._id}`,
+    {
+      text: newHabit,
+      category: category,
+      difficulty: difficulty,
+    },
+    {
+      headers: {
+        Authorization:
+          `Bearer ${token}`,
+      },
+    }
+  );
 
     const updatedHabits =
       [...habits];
@@ -172,9 +183,23 @@ const toggleHabit = async (index) => {
 let newXP;
 
 if (response.data.completed) {
-  newXP = xp + 10;
+const reward =
+  habit.difficulty === "Hard"
+    ? 30
+    : habit.difficulty === "Medium"
+    ? 20
+    : 10;
+
+newXP = xp + reward;
 } else {
-  newXP = xp - 10;
+const reward =
+  habit.difficulty === "Hard"
+    ? 30
+    : habit.difficulty === "Medium"
+    ? 20
+    : 10;
+
+newXP = xp - reward;
 }
 
 setXp(newXP);
@@ -407,7 +432,224 @@ useEffect(() => {
   }
 
 }, [completedHabits]);
+const calculateStreak = (
+  completionDates = []
+) => {
 
+  if (
+    completionDates.length === 0
+  ) {
+    return 0;
+  }
+
+  const dates =
+    [...completionDates]
+      .sort();
+
+  let streak = 1;
+
+  for (
+    let i = dates.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const current =
+      new Date(dates[i]);
+
+    const previous =
+      new Date(dates[i - 1]);
+
+    const diffDays =
+      Math.floor(
+        (current - previous) /
+        (1000 * 60 * 60 * 24)
+      );
+
+    if (diffDays === 1) {
+
+      streak++;
+
+    } else {
+
+      break;
+
+    }
+
+  }
+
+  return streak;
+
+};
+const calculateBestStreak = (
+  completionDates = []
+) => {
+
+  if (
+    completionDates.length === 0
+  ) {
+    return 0;
+  }
+
+  const dates =
+    [...completionDates]
+      .sort();
+
+  let best = 1;
+  let current = 1;
+
+  for (
+    let i = 1;
+    i < dates.length;
+    i++
+  ) {
+
+    const prev =
+      new Date(
+        dates[i - 1]
+      );
+
+    const curr =
+      new Date(
+        dates[i]
+      );
+
+    const diffDays =
+      Math.floor(
+        (curr - prev) /
+        (1000 * 60 * 60 * 24)
+      );
+
+    if (diffDays === 1) {
+
+      current++;
+
+      best =
+        Math.max(
+          best,
+          current
+        );
+
+    } else {
+
+      current = 1;
+
+    }
+
+  }
+
+  return best;
+
+};
+const calculateConsistency = (
+  completionDates = []
+) => {
+
+  if (
+    completionDates.length === 0
+  ) {
+    return 0;
+  }
+
+  const firstDate =
+    new Date(
+      completionDates[0]
+    );
+
+  const today =
+    new Date();
+
+  const totalDays =
+    Math.max(
+      1,
+      Math.floor(
+        (today - firstDate) /
+        (1000 * 60 * 60 * 24)
+      ) + 1
+    );
+
+  return Math.round(
+    (
+      completionDates.length /
+      totalDays
+    ) * 100
+  );
+
+};
+const generateHeatmap = (
+  completionDates = []
+) => {
+
+  const last30Days = [];
+
+  for (
+    let i = 29;
+    i >= 0;
+    i--
+  ) {
+
+    const date =
+      new Date();
+
+    date.setDate(
+      date.getDate() - i
+    );
+
+    const formatted =
+      date
+        .toISOString()
+        .split("T")[0];
+
+    last30Days.push(
+      completionDates.includes(
+        formatted
+      )
+    );
+
+  }
+
+  return last30Days;
+
+};
+const getMostActiveDay = (
+  completionDates = []
+) => {
+
+  if (
+    completionDates.length === 0
+  ) {
+    return "N/A";
+  }
+
+  const counts = {};
+
+  completionDates.forEach(
+    (date) => {
+
+      const day =
+        new Date(date)
+          .toLocaleDateString(
+            "en-US",
+            {
+              weekday: "long",
+            }
+          );
+
+      counts[day] =
+        (counts[day] || 0) + 1;
+
+    }
+  );
+
+  return Object.keys(
+    counts
+  ).reduce((a, b) =>
+    counts[a] > counts[b]
+      ? a
+      : b
+  );
+
+};
 
   return (
   
@@ -543,6 +785,8 @@ useEffect(() => {
   addHabit={addHabit}
   category={category}
   setCategory={setCategory}
+  difficulty={difficulty}
+  setDifficulty={setDifficulty}
 />
       <AISuggestions />
 
@@ -551,19 +795,135 @@ useEffect(() => {
         <XPCard xp={xp} />
 
         <StreakCard streak={streak} />
-
-        <HabitList
-          habits={habits}
-          deleteHabit={deleteHabit}
-          toggleHabit={toggleHabit}
-        />
+<HabitList
+  habits={habits}
+  deleteHabit={deleteHabit}
+  toggleHabit={toggleHabit}
+  setSelectedHistory={
+    setSelectedHistory
+  }
+/>
 
         <AchievementCard
           achievements={achievements}
         />
 
       </div>
-      <ProgressChart />
+  {selectedHistory && (
+
+  <div
+    className="modal-overlay"
+    onClick={() =>
+      setSelectedHistory(null)
+    }
+  >
+
+    <div
+      className="modal-content"
+      onClick={(e) =>
+        e.stopPropagation()
+      }
+    >
+
+      <button
+        onClick={() =>
+          setSelectedHistory(null)
+        }
+        className="close-btn"
+      >
+        ❌
+      </button>
+
+      <h2>
+        🌟 Habit Journey
+      </h2>
+
+      <h3>
+        {selectedHistory.text}
+      </h3>
+<div className="journey-stats">
+
+  <div className="journey-stat">
+    🔥 Current Streak:
+    {" "}
+    {calculateStreak(
+      selectedHistory.completionDates
+    )} Days
+  </div>
+
+  <div className="journey-stat">
+    🏆 Best Streak:
+    {" "}
+    {calculateBestStreak(
+      selectedHistory.completionDates
+    )} Days
+  </div>
+
+  <div className="journey-stat">
+    📊 Consistency:
+    {" "}
+    {calculateConsistency(
+      selectedHistory.completionDates
+    )}%
+  </div>
+
+  <div className="journey-stat">
+    🏆 Most Active Day:
+    {" "}
+    {getMostActiveDay(
+      selectedHistory.completionDates
+    )}
+  </div>
+
+</div>
+
+      <p>
+        📅 Total Completions:
+        {" "}
+        {
+          selectedHistory
+            .completionDates
+            ?.length || 0
+        }
+      </p>
+
+      <h4>
+        Last 30 Days
+      </h4>
+
+      <div className="heatmap">
+
+        {generateHeatmap(
+          selectedHistory
+            .completionDates
+        ).map(
+          (
+            completed,
+            index
+          ) => (
+
+            <div
+              key={index}
+              className={
+                completed
+                  ? "heatmap-cell active"
+                  : "heatmap-cell"
+              }
+            />
+
+          )
+        )}
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
+      <ProgressChart
+  habits={habits}
+/>
 
     </div>
   );

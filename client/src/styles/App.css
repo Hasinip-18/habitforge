@@ -1368,3 +1368,256 @@
     rgba(168, 85, 247, 0.3);
 
 }
+.history-card {
+
+  margin-top: 25px;
+
+  padding: 24px;
+
+  background: linear-gradient(
+    135deg,
+    #faf5ff,
+    #f5f3ff
+  );
+
+  border: 1px solid #e9d5ff;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 25px
+    rgba(168, 85, 247, 0.12);
+
+  color: #581c87;
+
+}
+.history-card h2 {
+
+  color: #7e22ce;
+
+  margin-bottom: 15px;
+
+}
+.history-card h2 {
+
+  color: #7e22ce;
+
+  margin-bottom: 15px;
+
+}
+.history-card h3 {
+
+  color: #9333ea;
+
+  margin-bottom: 15px;
+
+}
+.history-card p {
+
+  background: rgba(
+    168,
+    85,
+    247,
+    0.08
+  );
+
+  padding: 10px 15px;
+
+  border-radius: 12px;
+
+  margin-bottom: 8px;
+
+}
+.progress-btn {
+
+  background: #f3e8ff;
+
+  color: #9333ea;
+
+  border: none;
+
+  padding: 8px 14px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 500;
+
+  transition: 0.3s ease;
+
+}
+
+.progress-btn:hover {
+
+  background: #e9d5ff;
+
+}
+.progress-btn {
+
+  color: #9333ea !important;
+
+}
+.heatmap {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(10, 1fr);
+
+  gap: 6px;
+
+  margin-top: 15px;
+
+  margin-bottom: 20px;
+
+}
+
+.heatmap-cell {
+
+  width: 20px;
+
+  height: 20px;
+
+  border-radius: 6px;
+
+  background: #ede9fe;
+
+}
+
+.heatmap-cell.active {
+
+  background: #a855f7;
+
+}
+.modal-overlay {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.45
+  );
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 1000;
+
+}
+
+.modal-content {
+
+  width: 650px;
+
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 25px;
+
+  box-shadow:
+    0 20px 50px
+    rgba(168,85,247,0.2);
+
+  position: relative;
+
+}
+.modal-content h2 {
+
+  color: #7e22ce;
+
+  font-size: 2rem;
+
+  margin-bottom: 10px;
+
+}
+.modal-content h3 {
+
+  color: #a855f7;
+
+  margin-bottom: 25px;
+
+}
+
+.journey-stats {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+}
+.journey-stat {
+
+  background: #faf5ff;
+
+  border: 1px solid #e9d5ff;
+
+  padding: 12px;
+
+  border-radius: 15px;
+
+  color: #581c87;
+
+  font-weight: 600;
+
+}
+.close-btn {
+
+  position: absolute;
+
+  top: 20px;
+
+  right: 20px;
+
+  border: none;
+
+  background: none;
+
+  font-size: 1.4rem;
+
+  cursor: pointer;
+
+}
+.heatmap {
+
+  margin-top: 20px;
+
+  margin-bottom: 20px;
+
+  justify-content: center;
+
+}
+.habit-text {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+.difficulty-badge {
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+}

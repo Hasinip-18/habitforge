@@ -4,7 +4,9 @@ function HabitForm({
   addHabit,
   category,
   setCategory,
-}) {
+  difficulty,
+  setDifficulty,
+}){
   return (
     <div className="habit-form">
 
@@ -40,9 +42,20 @@ function HabitForm({
         </option>
       </select>
 
+
       <button onClick={addHabit}>
         Add Habit
       </button>
+<select
+  value={difficulty}
+  onChange={(e) =>
+    setDifficulty(e.target.value)
+  }
+>
+  <option>Easy</option>
+  <option>Medium</option>
+  <option>Hard</option>
+</select>
 
     </div>
   );

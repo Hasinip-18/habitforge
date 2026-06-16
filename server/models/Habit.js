@@ -16,6 +16,10 @@ const habitSchema = new mongoose.Schema(
   type: String,
   default: "Personal",
 },
+difficulty: {
+  type: String,
+  default: "Easy",
+},
 
     completed: {
       type: Boolean,
@@ -26,6 +30,11 @@ const habitSchema = new mongoose.Schema(
   type: Date,
   default: null,
 },
+completionDates: [
+  {
+    type: String,
+  },
+],
 
 
   },
