@@ -138,6 +138,27 @@ const updateXP = async (req, res) => {
   }
 
 };
+const updateCSVExports = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(req.user.id);
+
+    user.csvExports += 1;
+
+    await user.save();
+
+    res.json(user);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+
+};
 
 
 module.exports = {
@@ -145,4 +166,5 @@ module.exports = {
   loginUser,
   getProfile,
   updateXP,
+  updateCSVExports,
 };

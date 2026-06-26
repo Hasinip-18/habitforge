@@ -11,6 +11,14 @@ import HabitList from "../components/HabitList";
 import axios from "axios";
 import AISuggestions from "../components/AISuggestions";
 import Confetti from "react-confetti";
+import {
+  calculateStreak,
+  calculateBestStreak,
+  calculateConsistency,
+  generateHeatmap,
+  getMostActiveDay,
+} from "../utils/gamification";
+import ExportCSV from "../components/ExportCSV";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -56,6 +64,10 @@ setXpAnimation] =
 useState(null);
 const [loading, setLoading] =
   useState(true);
+   const [frequency,
+setFrequency] =
+useState("Daily");
+const [user, setUser] = useState(null);
 
   const level = Math.floor(xp / 500) + 1;
   const badges = [];
@@ -119,6 +131,18 @@ const goalPercentage =
 const addHabit = async () => {
 
   if (newHabit.trim() === "") return;
+  if (
+  !user?.isPremium &&
+  habits.length >= 100
+) {
+
+  alert(
+    "⭐ Free users can create up to 100 habits.\nUpgrade to HabitForge Pro for unlimited habits!"
+  );
+
+  return;
+
+}
 
   try {
 
@@ -126,20 +150,20 @@ const addHabit = async () => {
       localStorage.getItem("token");
 
     const response =
-      await axios.post(
-        "http://localhost:8000/api/habits",
-        {
-          text: newHabit,
-          category: category,
-          difficulty: difficulty,
-        },
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+await axios.post(
+  "http://localhost:8000/api/habits",
+  {
+    text: newHabit,
+    category: category,
+    difficulty: difficulty,
+    frequency: frequency,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
     setHabits([
       ...habits,
@@ -430,6 +454,7 @@ useEffect(() => {
 
       setXp(response.data.xp);
       setStreak(response.data.streak);
+      setUser(response.data);
 
     } catch (error) {
 
@@ -484,224 +509,7 @@ useEffect(() => {
   }
 
 }, [completedHabits]);
-const calculateStreak = (
-  completionDates = []
-) => {
 
-  if (
-    completionDates.length === 0
-  ) {
-    return 0;
-  }
-
-  const dates =
-    [...completionDates]
-      .sort();
-
-  let streak = 1;
-
-  for (
-    let i = dates.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const current =
-      new Date(dates[i]);
-
-    const previous =
-      new Date(dates[i - 1]);
-
-    const diffDays =
-      Math.floor(
-        (current - previous) /
-        (1000 * 60 * 60 * 24)
-      );
-
-    if (diffDays === 1) {
-
-      streak++;
-
-    } else {
-
-      break;
-
-    }
-
-  }
-
-  return streak;
-
-};
-const calculateBestStreak = (
-  completionDates = []
-) => {
-
-  if (
-    completionDates.length === 0
-  ) {
-    return 0;
-  }
-
-  const dates =
-    [...completionDates]
-      .sort();
-
-  let best = 1;
-  let current = 1;
-
-  for (
-    let i = 1;
-    i < dates.length;
-    i++
-  ) {
-
-    const prev =
-      new Date(
-        dates[i - 1]
-      );
-
-    const curr =
-      new Date(
-        dates[i]
-      );
-
-    const diffDays =
-      Math.floor(
-        (curr - prev) /
-        (1000 * 60 * 60 * 24)
-      );
-
-    if (diffDays === 1) {
-
-      current++;
-
-      best =
-        Math.max(
-          best,
-          current
-        );
-
-    } else {
-
-      current = 1;
-
-    }
-
-  }
-
-  return best;
-
-};
-const calculateConsistency = (
-  completionDates = []
-) => {
-
-  if (
-    completionDates.length === 0
-  ) {
-    return 0;
-  }
-
-  const firstDate =
-    new Date(
-      completionDates[0]
-    );
-
-  const today =
-    new Date();
-
-  const totalDays =
-    Math.max(
-      1,
-      Math.floor(
-        (today - firstDate) /
-        (1000 * 60 * 60 * 24)
-      ) + 1
-    );
-
-  return Math.round(
-    (
-      completionDates.length /
-      totalDays
-    ) * 100
-  );
-
-};
-const generateHeatmap = (
-  completionDates = []
-) => {
-
-  const last30Days = [];
-
-  for (
-    let i = 29;
-    i >= 0;
-    i--
-  ) {
-
-    const date =
-      new Date();
-
-    date.setDate(
-      date.getDate() - i
-    );
-
-    const formatted =
-      date
-        .toISOString()
-        .split("T")[0];
-
-    last30Days.push(
-      completionDates.includes(
-        formatted
-      )
-    );
-
-  }
-
-  return last30Days;
-
-};
-const getMostActiveDay = (
-  completionDates = []
-) => {
-
-  if (
-    completionDates.length === 0
-  ) {
-    return "N/A";
-  }
-
-  const counts = {};
-
-  completionDates.forEach(
-    (date) => {
-
-      const day =
-        new Date(date)
-          .toLocaleDateString(
-            "en-US",
-            {
-              weekday: "long",
-            }
-          );
-
-      counts[day] =
-        (counts[day] || 0) + 1;
-
-    }
-  );
-
-  return Object.keys(
-    counts
-  ).reduce((a, b) =>
-    counts[a] > counts[b]
-      ? a
-      : b
-  );
-
-};
 const quotes = [
   "Small habits become big results.",
   "Discipline beats motivation.",
@@ -778,9 +586,28 @@ const randomQuote =
       </div>
     )}
 
-      <h1>
-        Welcome Back Hasini 👋
-      </h1>
+<div className="profile-header">
+
+<div className="avatar">
+
+{user?.name
+? user.name.charAt(0).toUpperCase()
+: "?"}
+
+</div>
+<div>
+
+<h1>
+Welcome Back {user?.name} 👋
+</h1>
+
+  <p className="level-text">
+    ⭐ Level {level}
+  </p>
+
+</div>
+
+</div>
 <div className="quote-card">
 
   <h3>
@@ -867,6 +694,43 @@ const randomQuote =
   </div>
 
 </div>
+<ExportCSV
+  habits={habits}
+  user={user}
+  setUser={setUser}
+/>
+<div className="upgrade-card">
+
+  <div className="pro-badge">
+    ⭐ HABITFORGE PRO
+  </div>
+
+  <h3>Unlock Premium Features</h3>
+
+  <p>
+    Take your productivity to the next level.
+  </p>
+
+  <div className="pro-features">
+
+    <p>✨ Unlimited Habits</p>
+
+    <p>📊 Advanced Analytics</p>
+
+    <p>📄 CSV Export</p>
+
+    <p>🤖 Priority AI Suggestions</p>
+
+  </div>
+
+  <button
+    className="upgrade-btn"
+    onClick={() => navigate("/upgrade")}
+  >
+    Upgrade Now 🚀
+  </button>
+
+</div>
 <div className="challenge-card">
 
   <h3>
@@ -896,6 +760,9 @@ const randomQuote =
   setCategory={setCategory}
   difficulty={difficulty}
   setDifficulty={setDifficulty}
+  frequency={frequency}
+
+setFrequency={setFrequency}
 />
       <AISuggestions />
 
@@ -1053,46 +920,39 @@ const randomQuote =
         }
       </p>
 
-      <h4>
-        Last 30 Days
-      </h4>
+<h4>Last 30 Days</h4>
 
-      <div className="heatmap">
+<div className="heatmap">
 
-        {generateHeatmap(
-          selectedHistory
-            .completionDates
-        ).map(
-          (
-            completed,
-            index
-          ) => (
+  {generateHeatmap(
+    selectedHistory.completionDates
+  ).map((completed, index) => (
 
-            <div
-              key={index}
-              className={
-                completed
-                  ? "heatmap-cell active"
-                  : "heatmap-cell"
-              }
-            />
+    <div
+      key={index}
+      className={
+        completed
+          ? "heatmap-cell active"
+          : "heatmap-cell"
+      }
+    />
 
-          )
-        )}
+  ))}
 
-      </div>
+</div>
 
     </div>
 
   </div>
 
 )}
-      <ProgressChart
+
+<ProgressChart
   habits={habits}
 />
 
-    </div>
-  );
+</div>
+);
 }
 
 export default Dashboard;

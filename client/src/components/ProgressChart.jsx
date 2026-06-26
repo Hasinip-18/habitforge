@@ -60,7 +60,7 @@ for (
   return (
     <div className="chart-card">
 
-      <h2>Weekly Progress</h2>
+      <h2>📈 Weekly Habit Analytics</h2>
 
       <ResponsiveContainer
         width="100%"
@@ -76,6 +76,8 @@ for (
             dataKey="completions"
             stroke="#a855f7"
             strokeWidth={3}
+            dot={{ r: 5 }}
+activeDot={{ r: 8 }}
           />
         </LineChart>
       </ResponsiveContainer>

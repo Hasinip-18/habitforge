@@ -35,7 +35,11 @@ completionDates: [
     type: String,
   },
 ],
-
+frequency: {
+  type: String,
+  enum: ["Daily", "Weekly"],
+  default: "Daily",
+},
 
   },
   {

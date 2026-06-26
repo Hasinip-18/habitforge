@@ -26,6 +26,16 @@ streak: {
   type: Number,
   default: 0,
 },
+
+isPremium: {
+  type: Boolean,
+  default: false,
+},
+csvExports: {
+  type: Number,
+  default: 0,
+},
+
   },
   {
     timestamps: true,

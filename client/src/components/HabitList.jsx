@@ -39,6 +39,8 @@ function HabitList({
 
   {habit.text}
 
+<div className="habit-tags">
+
   <span
     className={`difficulty-badge ${
       habit.difficulty?.toLowerCase()
@@ -51,6 +53,15 @@ function HabitList({
       : "🔴 Hard"}
   </span>
 
+  <span className="frequency-badge">
+
+    {habit.frequency === "Weekly"
+      ? "🗓️ Weekly"
+      : "📅 Daily"}
+
+  </span>
+
+</div>
 </span>
 
     </label>

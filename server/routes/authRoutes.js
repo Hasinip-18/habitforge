@@ -12,6 +12,7 @@ const {
   loginUser,
   getProfile,
   updateXP,
+  updateCSVExports,
 } = require(
   "../controllers/authController"
 );
@@ -36,6 +37,11 @@ router.put(
   "/xp",
   protect,
   updateXP
+);
+router.put(
+  "/csv-export",
+  protect,
+  updateCSVExports
 );
 
 

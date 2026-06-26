@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Upgrade from "./pages/Upgrade";
 
 function App() {
   return (
@@ -21,7 +22,12 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route
+  path="/upgrade"
+  element={<Upgrade />}
+/>
       </Routes>
+      
     </>
   );
 }

@@ -6,6 +6,8 @@ function HabitForm({
   setCategory,
   difficulty,
   setDifficulty,
+  frequency,
+  setFrequency,
 }) {
   return (
 
@@ -46,6 +48,23 @@ function HabitForm({
           <option value="Medium">🟡 Medium</option>
           <option value="Hard">🔴 Hard</option>
         </select>
+        <select
+value={frequency}
+onChange={(e)=>
+setFrequency(
+e.target.value
+)}
+>
+
+<option value="Daily">
+📅 Daily
+</option>
+
+<option value="Weekly">
+🗓 Weekly
+</option>
+
+</select>
 
       </div>
 

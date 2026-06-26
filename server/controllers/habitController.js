@@ -46,6 +46,7 @@ const habit = await Habit.create({
   text: req.body.text,
   category: req.body.category,
   difficulty: req.body.difficulty,
+  frequency: req.body.frequency,
 });
     res.status(201).json(habit);
 
