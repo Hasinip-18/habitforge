@@ -26,7 +26,10 @@ streak: {
   type: Number,
   default: 0,
 },
-
+lastCompletedDate: {
+  type: Date,
+  default: null,
+},
 isPremium: {
   type: Boolean,
   default: false,
