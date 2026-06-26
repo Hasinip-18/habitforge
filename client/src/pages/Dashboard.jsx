@@ -41,6 +41,21 @@ const [streak, setStreak] = useState(0);
   const [selectedHistory,
   setSelectedHistory] =
   useState(null);
+  const [searchTerm, setSearchTerm] =
+  useState("");
+
+const [filterCategory,
+  setFilterCategory] =
+  useState("All");
+
+const [filterDifficulty,
+  setFilterDifficulty] =
+  useState("All");
+  const [xpAnimation,
+setXpAnimation] =
+useState(null);
+const [loading, setLoading] =
+  useState(true);
 
   const level = Math.floor(xp / 500) + 1;
   const badges = [];
@@ -60,7 +75,33 @@ if (xp >= 5000)
   const completedHabits = habits.filter(
     (habit) => habit.completed
   ).length;
+  const filteredHabits =
+  habits.filter((habit) => {
+
+    const matchesSearch =
+      habit.text
+        .toLowerCase()
+        .includes(
+          searchTerm.toLowerCase()
+        );
+
+    const matchesCategory =
+      filterCategory === "All"
+      || habit.category === filterCategory;
+
+    const matchesDifficulty =
+      filterDifficulty === "All"
+      || habit.difficulty === filterDifficulty;
+
+    return (
+      matchesSearch &&
+      matchesCategory &&
+      matchesDifficulty
+    );
+
+  });
   const challengeTarget = 3;
+
 
 const challengeProgress =
   Math.min(
@@ -191,6 +232,15 @@ const reward =
     : 10;
 
 newXP = xp + reward;
+setXpAnimation(
+`+${reward} XP`
+);
+
+setTimeout(() => {
+
+setXpAnimation(null);
+
+},2000);
 } else {
 const reward =
   habit.difficulty === "Hard"
@@ -343,10 +393,12 @@ useEffect(() => {
         );
 
       setHabits(response.data);
+      setLoading(false);
 
     } catch (error) {
 
       console.log(error);
+      setLoading(false);
 
     }
 
@@ -650,6 +702,46 @@ const getMostActiveDay = (
   );
 
 };
+const quotes = [
+  "Small habits become big results.",
+  "Discipline beats motivation.",
+  "Success is the sum of small efforts.",
+  "The future depends on what you do today.",
+  "Stay consistent. Results will follow.",
+  "Every expert was once a beginner.",
+  "One step every day is enough.",
+  "Tiny progress is still progress.",
+];
+const randomQuote =
+  quotes[
+    Math.floor(
+      Math.random() *
+      quotes.length
+    )
+  ];
+  if (loading) {
+
+  return (
+
+    <div className="loading-screen">
+
+      <div className="loading-logo">
+        🌱
+      </div>
+
+      <h1>HabitForge</h1>
+
+      <div className="spinner"></div>
+
+      <p>
+        Loading your journey...
+      </p>
+
+    </div>
+
+  );
+
+}
 
   return (
   
@@ -668,6 +760,15 @@ const getMostActiveDay = (
     numberOfPieces={250}
   />
 )}
+{xpAnimation && (
+
+<div className="xp-popup">
+
+✨ {xpAnimation}
+
+</div>
+
+)}
 
     {showLevelUp && (
       <div className="level-popup">
@@ -680,9 +781,17 @@ const getMostActiveDay = (
       <h1>
         Welcome Back Hasini 👋
       </h1>
-      <p className="dashboard-subtitle">
-  Let's make habits dynamic today ✨
-</p>
+<div className="quote-card">
+
+  <h3>
+    ✨ Quote of the Day
+  </h3>
+
+  <p>
+    "{randomQuote}"
+  </p>
+
+</div>
       
 
       <div className="stats-row">
@@ -795,8 +904,65 @@ const getMostActiveDay = (
         <XPCard xp={xp} />
 
         <StreakCard streak={streak} />
+
+<div className="search-section">
+
+  <h3>🔎 Find Your Habit</h3>
+
+  <input
+    type="text"
+    placeholder="Search habits..."
+    value={searchTerm}
+    onChange={(e) =>
+      setSearchTerm(e.target.value)
+    }
+    className="search-box"
+  />
+
+  <div className="filter-row">
+
+    <div className="filter-group">
+
+      <label>Category</label>
+
+      <select
+        value={filterCategory}
+        onChange={(e) =>
+          setFilterCategory(e.target.value)
+        }
+      >
+        <option>All</option>
+        <option>Personal</option>
+        <option>Health</option>
+        <option>Study</option>
+        <option>Coding</option>
+      </select>
+
+    </div>
+
+    <div className="filter-group">
+
+      <label>Difficulty</label>
+
+      <select
+        value={filterDifficulty}
+        onChange={(e) =>
+          setFilterDifficulty(e.target.value)
+        }
+      >
+        <option>All</option>
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+
+    </div>
+
+  </div>
+
+</div>
 <HabitList
-  habits={habits}
+  habits={filteredHabits}
   deleteHabit={deleteHabit}
   toggleHabit={toggleHabit}
   setSelectedHistory={

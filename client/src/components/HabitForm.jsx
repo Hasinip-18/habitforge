@@ -6,58 +6,51 @@ function HabitForm({
   setCategory,
   difficulty,
   setDifficulty,
-}){
+}) {
   return (
-    <div className="habit-form">
 
-      <input
-        type="text"
-        placeholder="Enter a new habit..."
-        value={newHabit}
-        onChange={(e) =>
-          setNewHabit(e.target.value)
-        }
-      />
+    <div className="habit-form-card">
 
-      <select
-        value={category}
-        onChange={(e) =>
-          setCategory(e.target.value)
-        }
-      >
-        <option value="Personal">
-          Personal
-        </option>
+      <div className="habit-icon">
+        🌱
+      </div>
 
-        <option value="Health">
-          Health
-        </option>
+      <div className="habit-form">
 
-        <option value="Study">
-          Study
-        </option>
+        <input
+          type="text"
+          placeholder="Enter a new habit..."
+          value={newHabit}
+          onChange={(e) => setNewHabit(e.target.value)}
+        />
 
-        <option value="Coding">
-          Coding
-        </option>
-      </select>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="Personal">🌱 Personal</option>
+          <option value="Health">🏃 Health</option>
+          <option value="Study">📚 Study</option>
+          <option value="Coding">💻 Coding</option>
+        </select>
 
+        <button onClick={addHabit}>
+          ➕ Add Habit
+        </button>
 
-      <button onClick={addHabit}>
-        Add Habit
-      </button>
-<select
-  value={difficulty}
-  onChange={(e) =>
-    setDifficulty(e.target.value)
-  }
->
-  <option>Easy</option>
-  <option>Medium</option>
-  <option>Hard</option>
-</select>
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <option value="Easy">🟢 Easy</option>
+          <option value="Medium">🟡 Medium</option>
+          <option value="Hard">🔴 Hard</option>
+        </select>
+
+      </div>
 
     </div>
+
   );
 }
 
