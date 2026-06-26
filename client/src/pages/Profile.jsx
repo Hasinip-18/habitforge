@@ -16,7 +16,7 @@ function Profile() {
 
         const response =
           await axios.get(
-            "http://localhost:8000/api/auth/profile",
+            `${import.meta.env.VITE_API_URL}/api/auth/profile`,
             {
               headers: {
                 Authorization:
@@ -26,6 +26,7 @@ function Profile() {
           );
 
         setUser(response.data);
+        console.log("Profile Data:", response.data);
 
       } catch (error) {
 
@@ -60,25 +61,25 @@ function Profile() {
     <div className="profile-card">
 
       <div className="avatar-circle">
-        {user.name.charAt(0).toUpperCase()}
+        {user?.name ? user.name.charAt(0).toUpperCase() : "?"}
       </div>
 
-      <h1>{user.name}</h1>
+      <h1>{user?.name}</h1>
 
       <p className="profile-email">
-        📧 {user.email}
+        📧 {user?.email}
       </p>
 
       <div className="profile-stats">
 
         <div className="profile-stat">
           <h3>⭐ XP</h3>
-          <p>{user.xp}</p>
+          <p>{user?.xp}</p>
         </div>
 
         <div className="profile-stat">
           <h3>🔥 Streak</h3>
-          <p>{user.streak}</p>
+          <p>{user?.streak}</p>
         </div>
 
         <div className="profile-stat">
@@ -97,14 +98,14 @@ function Profile() {
           <div
             className="level-fill"
             style={{
-              width: `${(user.xp % 500) / 5}%`,
-            }}
+  width: `${((user?.xp || 0) % 500) / 5}%`,
+}}
           ></div>
 
         </div>
 
         <p>
-          {user.xp % 500}/500 XP
+          {(user?.xp || 0) % 500}/500 XP
         </p>
 
       </div>

@@ -84,34 +84,31 @@ if (xp >= 3000)
 if (xp >= 5000)
   badges.push("💎 Legend");
 
-  const completedHabits = habits.filter(
-    (habit) => habit.completed
-  ).length;
-  const filteredHabits =
-  habits.filter((habit) => {
+const completedHabits = Array.isArray(habits)
+  ? habits.filter((habit) => habit.completed).length
+  : 0;
+const filteredHabits = Array.isArray(habits)
+  ? habits.filter((habit) => {
+      const matchesSearch =
+        habit.text
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-    const matchesSearch =
-      habit.text
-        .toLowerCase()
-        .includes(
-          searchTerm.toLowerCase()
-        );
+      const matchesCategory =
+        filterCategory === "All" ||
+        habit.category === filterCategory;
 
-    const matchesCategory =
-      filterCategory === "All"
-      || habit.category === filterCategory;
+      const matchesDifficulty =
+        filterDifficulty === "All" ||
+        habit.difficulty === filterDifficulty;
 
-    const matchesDifficulty =
-      filterDifficulty === "All"
-      || habit.difficulty === filterDifficulty;
-
-    return (
-      matchesSearch &&
-      matchesCategory &&
-      matchesDifficulty
-    );
-
-  });
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesDifficulty
+      );
+    })
+  : [];
   const challengeTarget = 3;
 
 
@@ -151,7 +148,7 @@ const addHabit = async () => {
 
     const response =
 await axios.post(
-  "http://localhost:8000/api/habits",
+  `${import.meta.env.VITE_API_URL}/api/habits`,
   {
     text: newHabit,
     category: category,
@@ -190,7 +187,7 @@ const deleteHabit = async (indexToDelete) => {
       habits[indexToDelete];
 
     await axios.delete(
-      `http://localhost:8000/api/habits/${habitToDelete._id}`,
+      `${import.meta.env.VITE_API_URL}/api/habits/${habitToDelete._id}`,
       {
         headers: {
           Authorization:
@@ -225,7 +222,7 @@ const toggleHabit = async (index) => {
 
 const response =
   await axios.put(
-    `http://localhost:8000/api/habits/${habit._id}`,
+    `${import.meta.env.VITE_API_URL}/api/habits/${habit._id}`,
     {
       text: newHabit,
       category: category,
@@ -279,7 +276,7 @@ newXP = xp - reward;
 setXp(newXP);
 
 await axios.put(
-  "http://localhost:8000/api/auth/xp",
+  `${import.meta.env.VITE_API_URL}/api/auth/xp`,
   {
     xp: newXP,
   },
@@ -407,7 +404,7 @@ useEffect(() => {
 
       const response =
         await axios.get(
-          "http://localhost:8000/api/habits",
+          `${import.meta.env.VITE_API_URL}/api/habits`,
           {
             headers: {
               Authorization:
@@ -416,7 +413,10 @@ useEffect(() => {
           }
         );
 
-      setHabits(response.data);
+      console.log("Habits API Response:", response.data);
+console.log("Is Array?", Array.isArray(response.data));
+
+setHabits(response.data);
       setLoading(false);
 
     } catch (error) {
@@ -443,7 +443,7 @@ useEffect(() => {
 
       const response =
         await axios.get(
-          "http://localhost:8000/api/auth/profile",
+          `${import.meta.env.VITE_API_URL}/api/auth/profile`,
           {
             headers: {
               Authorization:
@@ -484,7 +484,7 @@ useEffect(() => {
       localStorage.getItem("token");
 
     axios.put(
-      "http://localhost:8000/api/auth/xp",
+      `${import.meta.env.VITE_API_URL}/api/auth/xp`,
       {
         xp: newXP,
       },

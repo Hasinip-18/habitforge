@@ -12,7 +12,7 @@ function AISuggestions() {
 
       const response =
         await axios.post(
-          "http://localhost:8000/api/ai/suggest",
+          `${import.meta.env.VITE_API_URL}/api/ai/suggest`,
           { goal }
         );
 
@@ -39,7 +39,7 @@ function AISuggestions() {
       );
 
     await axios.post(
-      "http://localhost:8000/api/habits",
+      `${import.meta.env.VITE_API_URL}/api/habits`,
       {
         text: suggestion,
       },

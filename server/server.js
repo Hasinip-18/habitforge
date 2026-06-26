@@ -13,12 +13,6 @@ const habitRoutes =
   require("./routes/habitRoutes");
 
 dotenv.config();
-dotenv.config();
-
-console.log(
-  "Gemini Key:",
-  process.env.GEMINI_API_KEY
-);
 
 connectDB();
 

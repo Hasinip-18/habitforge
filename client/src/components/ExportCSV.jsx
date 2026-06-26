@@ -86,7 +86,7 @@ function ExportCSV({
         );
 
       await axios.put(
-        "http://localhost:8000/api/auth/csv-export",
+        `${import.meta.env.VITE_API_URL}/api/auth/csv-export`,
         {},
         {
           headers: {
