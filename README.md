@@ -1,12 +1,15 @@
-🌱 HabitForge – AI-Powered Habit Tracking Platform
+🌱 HabitForge – Gamified Habit Tracking Platform
 
-HabitForge is a full-stack AI-powered habit tracking application built using the MERN Stack. It helps users build and maintain positive habits through gamification, analytics, and AI-powered recommendations.
+HabitForge is a full-stack habit tracking application built using the MERN Stack. It helps users build and maintain positive habits through gamification, progress tracking, analytics, and smart habit recommendations.
 
 🌐 Live Demo
 
-🔗 Frontend: (Paste your Render Frontend URL here)
+* Frontend: https://habitforge-1-wwvu.onrender.com
+* Backend: https://habitforge-t8jy.onrender.com
 
-🔗 Backend: (Paste your Render Backend URL here)
+📂 GitHub Repository
+
+https://github.com/Hasinip-18/habitforge
 
 ⸻
 
@@ -19,7 +22,7 @@ HabitForge is a full-stack AI-powered habit tracking application built using the
 * 🔥 Daily Streak Tracking
 * 🏆 Achievement Badges
 * 📊 Weekly Progress Analytics
-* 🤖 AI-Powered Habit Suggestions (Google Gemini)
+* 💡 Smart Habit Suggestions
 * 🔍 Search & Filter Habits
 * 📄 Export Habit Data to CSV
 * 💎 Premium Upgrade Page
@@ -47,10 +50,6 @@ Backend
 * JWT Authentication
 * bcrypt.js
 
-AI
-
-* Google Gemini API
-
 Deployment
 
 * Render
@@ -72,7 +71,7 @@ HabitForge/
 
 Clone the repository
 
-git clone <your-github-repository-url>
+git clone https://github.com/Hasinip-18/habitforge.git
 
 Install Frontend
 
@@ -95,9 +94,8 @@ npm start
 * 📊 Dashboard
 * 👤 Profile
 * 📈 Analytics
-* 🤖 AI Suggestions
 
-(We’ll add screenshots next.)
+(Screenshots will be added soon.)
 
 ⸻
 
@@ -105,7 +103,7 @@ npm start
 
 * 🌙 Dark Mode
 * 🔔 Habit Reminder Notifications
-* 📱 Mobile App
+* 📱 Mobile Application
 * 📧 Email Verification
 * 🏅 Community Challenges
 * 📈 Advanced Analytics
@@ -114,10 +112,14 @@ npm start
 
 👩‍💻 Developer
 
-Developed by Hasini Panjala as a Full Stack MERN + AI project.
+Hasini Panjala
+
+Full Stack MERN Developer
+
+GitHub: https://github.com/Hasinip-18
 
 ⸻
 
 📜 License
 
-This project is created for educational and portfolio purposes.
+This project was developed for educational and portfolio purposes.
